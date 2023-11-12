@@ -16,12 +16,16 @@ export class App extends Component {
   };
 
   onSearch = async newQuery => {
-    this.setState({
-      isLoading: true,
-      query: newQuery,
-      page: 1,
-      images: [],
-    });
+    if (newQuery === '') {
+      toast.error('Please enter something to search');
+    } else {
+      this.setState({
+        isLoading: true,
+        query: newQuery,
+        page: 1,
+        images: [],
+      });
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
