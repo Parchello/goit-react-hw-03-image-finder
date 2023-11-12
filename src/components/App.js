@@ -1,8 +1,8 @@
 import { Component } from 'react';
-
+import toast, { Toaster } from 'react-hot-toast';
 import { SearchBar } from './SearchBar/SearchBar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import { Button } from './Button/Button';
+import { Loader } from './Button/Loader';
 import { fetchImages } from './api';
 import { MagnifyingGlass } from 'react-loader-spinner';
 
@@ -12,6 +12,7 @@ export class App extends Component {
     isLoading: false,
     query: '',
     page: 1,
+    showBtn: false,
   };
 
   onSearch = async newQuery => {
@@ -29,7 +30,6 @@ export class App extends Component {
       prevState.page !== this.state.page
     ) {
       this.fetchUpdatedImages();
-      console.log('rend');
     }
   }
 
@@ -42,9 +42,11 @@ export class App extends Component {
 
       this.setState(prevState => ({
         images: [...prevState.images, ...searchedImages.hits],
+        showBtn: this.state.page < Math.ceil(searchedImages.totalHits / 12),
         isLoading: false,
       }));
     } catch (error) {
+      toast.error('There is an error fetching images');
       this.setState({ isLoading: false });
     }
   };
@@ -72,7 +74,8 @@ export class App extends Component {
           />
         )}
         <ImageGallery imagesRender={this.state.images} />
-        {this.state.images.length > 0 ? <Button addPage={this.onAdd} /> : null}
+        {this.state.showBtn && <Loader addPage={this.onAdd} />}
+        <Toaster />
       </div>
     );
   }

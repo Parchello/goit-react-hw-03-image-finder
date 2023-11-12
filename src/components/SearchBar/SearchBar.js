@@ -1,7 +1,8 @@
 import { Formik, Field, Form } from 'formik';
+import { SearcWrapper } from './SearchBar.styled';
 export const SearchBar = ({ addGalery }) => {
   return (
-    <div>
+    <SearcWrapper>
       <Formik
         initialValues={{
           queryName: '',
@@ -17,6 +18,6 @@ export const SearchBar = ({ addGalery }) => {
           <button type="submit">Search</button>
         </Form>
       </Formik>
-    </div>
+    </SearcWrapper>
   );
 };
